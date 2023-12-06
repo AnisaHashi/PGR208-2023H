@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.pgr208_2023h"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.pgr208_2023h"
@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.navigation:navigation-compose:2.7.5")
     implementation ("io.coil-kt:coil-compose:1.4.0")
 
     implementation("androidx.core:core-ktx:1.9.0")

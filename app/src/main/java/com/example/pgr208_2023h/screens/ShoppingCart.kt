@@ -30,10 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.services.ShoppingCartService
+import com.example.pgr208_2023h.viewmodels.CartViewModel
 
 
 @Composable
-fun ShoppingCartItem(product: Product){
+fun ShoppingCartItem(product: Product, onDelete:() -> Unit){
 
     Row (
         verticalAlignment = Alignment.CenterVertically,
@@ -54,7 +55,7 @@ fun ShoppingCartItem(product: Product){
             ProductCard(product = product, onClick = {})
         }
         // Button delete
-        IconButton(onClick = { /* do something */ }) {
+        IconButton(onClick = onDelete) {
             Icon(
                 imageVector = Icons.Filled.Close,
                 contentDescription = "Localized description"
@@ -68,7 +69,7 @@ fun ShoppingCartItem(product: Product){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShoppingCart(navController: NavController) {
+fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel) {
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val shoppingCartService = ShoppingCartService()
@@ -121,8 +122,8 @@ fun ShoppingCart(navController: NavController) {
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(shoppingCartService.getShoppingCart()) { product ->
-                    ShoppingCartItem(product = product)
+                items(cartViewModel.cartItems) { product ->
+                    ShoppingCartItem(product = product, onDelete = {cartViewModel.deleteCartItem(product)})
                 }
 
             }

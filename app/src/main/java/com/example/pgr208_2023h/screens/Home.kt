@@ -89,12 +89,12 @@ fun Home(navController: NavController, productViewModel: ProductViewModel) {
             )
         },
     ) { innerPadding ->
-        ScrollContent(innerPadding, products = productViewModel.products,  onClick = { navController.navigate("Details")})
+        ScrollContent(innerPadding, products = productViewModel.products,  onClick = { navController.navigate("Details/${it}")})
     }
 }
 
 @Composable
-fun ScrollContent(innerPadding: PaddingValues, products: List<Product>, onClick: ()-> Unit, ) {
+fun ScrollContent(innerPadding: PaddingValues, products: List<Product>, onClick: (productId: Int)-> Unit, ) {
     val range = 1..10
 
     LazyColumn(
@@ -112,7 +112,7 @@ fun ScrollContent(innerPadding: PaddingValues, products: List<Product>, onClick:
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductCard(product: Product, onClick: ()-> Unit) {
+fun ProductCard(product: Product, onClick: (productId: Int)-> Unit) {
 
     val shoppingCartService = ShoppingCartService()
     Card(
@@ -123,9 +123,9 @@ fun ProductCard(product: Product, onClick: ()-> Unit) {
             .padding(16.dp),
 
         onClick = {
-            shoppingCartService.addToCart(product = product)
+            //shoppingCartService.addToCart(product = product)
 
-            //onClick()
+            onClick(product.id)
         }
 
 

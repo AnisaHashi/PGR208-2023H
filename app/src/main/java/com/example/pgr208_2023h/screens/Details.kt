@@ -25,12 +25,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pgr208_2023h.viewmodels.CartViewModel
+import com.example.pgr208_2023h.viewmodels.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Details(navController: NavController){
+fun Details(navController: NavController, productId: Int, productViewModel: ProductViewModel, cartViewModel: CartViewModel){
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+    val product = productViewModel.products.find { p -> p.id == productId }
 
 
 
@@ -52,7 +56,7 @@ fun Details(navController: NavController){
                 },
                 title = {
                     Text(
-                        "Product Details:",
+                        "Product Details: for ${productId}",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -79,9 +83,17 @@ fun Details(navController: NavController){
     ) { innerPadding ->
         Column (modifier = Modifier.padding(innerPadding)) {
 
-                Text(text = "Dette er detaljer til produktet blaah blah ... ")
+                Text(text = "${product?.title}")
 
-                Button(onClick = { navController.navigate("ShoppingCart") }) {
+                Button(onClick = {
+                    if(product != null){
+                        cartViewModel.addCartItem(product)
+
+                    }
+
+                    navController.navigate("ShoppingCart")
+
+                }) {
                     Text(text = "Add to cart")
                 }
 

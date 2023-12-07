@@ -55,9 +55,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.rememberImagePainter
 import com.example.pgr208_2023h.screens.Details
 import com.example.pgr208_2023h.screens.Home
@@ -65,13 +67,18 @@ import com.example.pgr208_2023h.screens.OrderHistory
 
 import com.example.pgr208_2023h.screens.ShoppingCart
 import com.example.pgr208_2023h.ui.theme.PGR2082023HTheme
+import com.example.pgr208_2023h.viewmodels.CartViewModel
 import com.example.pgr208_2023h.viewmodels.ProductViewModel
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val productViewModel = ProductViewModel()
+        val cartViewModel = CartViewModel()
+
+
         super.onCreate(savedInstanceState)
+
         setContent {
             PGR2082023HTheme {
                 Surface(
@@ -86,10 +93,13 @@ class MainActivity : ComponentActivity() {
                             Home(navController = navController, productViewModel = productViewModel)
                         }
                         composable("ShoppingCart"){
-                            ShoppingCart(navController = navController)
+                            ShoppingCart(navController = navController, cartViewModel = cartViewModel)
                         }
-                        composable("Details"){
-                            Details(navController = navController)
+                        composable("Details/{productId}",
+                            arguments = listOf(navArgument("productId") { type = NavType.IntType })){backStackEntry ->
+                            val productId = backStackEntry.arguments?.getInt("productId") ?: -1
+                            Details(navController = navController, productId = productId, productViewModel = productViewModel, cartViewModel = cartViewModel)
+
                         }
                         composable("OrderHistory"){
                             OrderHistory(navController = navController)

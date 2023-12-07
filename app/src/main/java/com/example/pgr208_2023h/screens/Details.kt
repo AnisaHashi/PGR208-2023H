@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.pgr208_2023h.getProducts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

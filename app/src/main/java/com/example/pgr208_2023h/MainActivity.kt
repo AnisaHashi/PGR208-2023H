@@ -65,10 +65,12 @@ import com.example.pgr208_2023h.screens.OrderHistory
 
 import com.example.pgr208_2023h.screens.ShoppingCart
 import com.example.pgr208_2023h.ui.theme.PGR2082023HTheme
+import com.example.pgr208_2023h.viewmodels.ProductViewModel
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val productViewModel = ProductViewModel()
         super.onCreate(savedInstanceState)
         setContent {
             PGR2082023HTheme {
@@ -81,7 +83,7 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController = navController, startDestination = "Home" ){
                         composable("Home"){
-                            Home(navController = navController)
+                            Home(navController = navController, productViewModel = productViewModel)
                         }
                         composable("ShoppingCart"){
                             ShoppingCart(navController = navController)

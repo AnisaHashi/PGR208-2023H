@@ -28,17 +28,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.pgr208_2023h.Product
-import com.example.pgr208_2023h.getProducts
+import com.example.pgr208_2023h.models.Product
+import com.example.pgr208_2023h.services.ShoppingCartService
 
 
 @Composable
 fun ShoppingCartItem(product: Product){
 
-
     Row (
         verticalAlignment = Alignment.CenterVertically,
-
 
         modifier = Modifier
             .fillMaxWidth()
@@ -54,7 +52,6 @@ fun ShoppingCartItem(product: Product){
             .fillMaxWidth(0.9f),
         ) {
             ProductCard(product = product, onClick = {})
-
         }
         // Button delete
         IconButton(onClick = { /* do something */ }) {
@@ -67,13 +64,14 @@ fun ShoppingCartItem(product: Product){
     }
 
 }
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingCart(navController: NavController) {
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
-
+    val shoppingCartService = ShoppingCartService()
 
     Scaffold(
         topBar = {
@@ -104,7 +102,7 @@ fun ShoppingCart(navController: NavController) {
                     }) {
                         Icon(
                             imageVector = Icons.Filled.ShoppingCart,
-                            contentDescription = "Localized description"
+                            contentDescription = "Shopping Cart"
                         )
                     }
                     IconButton(onClick = { /* do something */ }) {
@@ -123,7 +121,7 @@ fun ShoppingCart(navController: NavController) {
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(getProducts()) { product ->
+                items(shoppingCartService.getShoppingCart()) { product ->
                     ShoppingCartItem(product = product)
                 }
 

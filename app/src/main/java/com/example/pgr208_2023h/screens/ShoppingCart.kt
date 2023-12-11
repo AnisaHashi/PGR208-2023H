@@ -3,6 +3,7 @@ package com.example.pgr208_2023h.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -121,7 +122,7 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
             )
         },
     ) { innerPadding ->
-        Column{
+        Column(modifier = Modifier.fillMaxHeight()){
             LazyColumn(
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -131,6 +132,11 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
                 }
 
             }
+            
+            
+
+            if(cartViewModel.cartItems.size > 0){
+
 
             Button(
                 onClick = {
@@ -154,6 +160,11 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
             ) {
                 Text("Place order")
             }
+
+            } else {
+                Text(text = "Handlekurven er tom. ")
+            }
+
 
 
 

@@ -71,9 +71,9 @@ fun OrderHistoryCard(orderHistory: OrderHistory) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ){
-                itemsIndexed(orderHistory.products){index, item ->
+                itemsIndexed(orderHistory.items){index, item ->
                     Text(
-                        text = "${index+1}. ${item.title}",
+                        text = "${index+1}. ${item}",
                         maxLines = 1
 
                     )

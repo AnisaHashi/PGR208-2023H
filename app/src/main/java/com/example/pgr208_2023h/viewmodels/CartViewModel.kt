@@ -19,4 +19,8 @@ class CartViewModel : ViewModel() {
         _cartList.remove(product)
     }
 
+    fun clear() {
+        _cartList.clear()
+    }
+
 }

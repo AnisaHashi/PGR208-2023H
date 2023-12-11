@@ -137,10 +137,13 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
                     val date = LocalDateTime.now()
                     val sum = cartViewModel.cartItems.sumOf { it.price }
                     val antall = cartViewModel.cartItems.size
+                    val items = cartViewModel.cartItems.map { it.title }
 
-                    val orderHistory= OrderHistory(date, cartViewModel.cartItems, sum, antall)
+                    val orderHistory= OrderHistory(date = date, items = items, sumPrice = sum, sumItems =  antall)
+                    orderHistoryviewModel.addOrderHistoryItem(orderHistory)
 
-                        orderHistoryviewModel.addOrderHistoryItem(orderHistory)
+                    cartViewModel.clear()
+
                     navController.navigate("OrderHistory")
 
                           },

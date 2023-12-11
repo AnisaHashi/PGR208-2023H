@@ -12,8 +12,6 @@ class OrderHistoryviewModel : ViewModel() {
         get() = _cartList
 
     fun addOrderHistoryItem( orderHistory: OrderHistory){
-
-
         _cartList.add(orderHistory)
     }
 

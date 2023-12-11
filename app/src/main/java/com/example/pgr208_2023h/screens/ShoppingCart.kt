@@ -28,9 +28,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pgr208_2023h.models.OrderHistory
 import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.services.ShoppingCartService
 import com.example.pgr208_2023h.viewmodels.CartViewModel
+import com.example.pgr208_2023h.viewmodels.OrderHistoryviewModel
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 @Composable
@@ -69,7 +73,7 @@ fun ShoppingCartItem(product: Product, onDelete:() -> Unit){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel) {
+fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, orderHistoryviewModel: OrderHistoryviewModel) {
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val shoppingCartService = ShoppingCartService()
@@ -129,7 +133,17 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel) {
             }
 
             Button(
-                onClick = { navController.navigate("OrderHistory") },
+                onClick = {
+                    val date = LocalDateTime.now()
+                    val sum = cartViewModel.cartItems.sumOf { it.price }
+                    val antall = cartViewModel.cartItems.size
+
+                    val orderHistory= OrderHistory(date, cartViewModel.cartItems, sum, antall)
+
+                        orderHistoryviewModel.addOrderHistoryItem(orderHistory)
+                    navController.navigate("OrderHistory")
+
+                          },
                 modifier = Modifier
                     .fillMaxWidth()
 

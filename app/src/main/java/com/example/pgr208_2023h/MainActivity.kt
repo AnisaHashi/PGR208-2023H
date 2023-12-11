@@ -68,6 +68,7 @@ import com.example.pgr208_2023h.screens.OrderHistory
 import com.example.pgr208_2023h.screens.ShoppingCart
 import com.example.pgr208_2023h.ui.theme.PGR2082023HTheme
 import com.example.pgr208_2023h.viewmodels.CartViewModel
+import com.example.pgr208_2023h.viewmodels.OrderHistoryviewModel
 import com.example.pgr208_2023h.viewmodels.ProductViewModel
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
@@ -75,6 +76,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val productViewModel = ProductViewModel()
         val cartViewModel = CartViewModel()
+        val orderHistoryviewModel = OrderHistoryviewModel()
 
 
         super.onCreate(savedInstanceState)
@@ -93,7 +95,7 @@ class MainActivity : ComponentActivity() {
                             Home(navController = navController, productViewModel = productViewModel)
                         }
                         composable("ShoppingCart"){
-                            ShoppingCart(navController = navController, cartViewModel = cartViewModel)
+                            ShoppingCart(navController = navController, cartViewModel = cartViewModel, orderHistoryviewModel = orderHistoryviewModel)
                         }
                         composable("Details/{productId}",
                             arguments = listOf(navArgument("productId") { type = NavType.IntType })){backStackEntry ->
@@ -102,7 +104,7 @@ class MainActivity : ComponentActivity() {
 
                         }
                         composable("OrderHistory"){
-                            OrderHistory(navController = navController)
+                            OrderHistory(navController = navController, orderHistoryviewModel)
                         }
                     }
 

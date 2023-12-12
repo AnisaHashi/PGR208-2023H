@@ -34,7 +34,6 @@ import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.services.ShoppingCartService
 import com.example.pgr208_2023h.viewmodels.CartViewModel
 import com.example.pgr208_2023h.viewmodels.OrderHistoryviewModel
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 
@@ -135,7 +134,7 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
             
             
 
-            if(cartViewModel.cartItems.size > 0){
+           //if(cartViewModel.cartItems.size > 0){
 
 
             Button(
@@ -161,9 +160,9 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
                 Text("Place order")
             }
 
-            } else {
-                Text(text = "Handlekurven er tom. ")
-            }
+            //} else {
+              // Text(text = "Handlekurven er tom. ")
+            //}
 
 
 

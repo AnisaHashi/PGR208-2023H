@@ -34,7 +34,7 @@ import com.example.pgr208_2023h.models.OrderHistory
 import com.example.pgr208_2023h.viewmodels.OrderHistoryviewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
+
 
 // Help functions
 

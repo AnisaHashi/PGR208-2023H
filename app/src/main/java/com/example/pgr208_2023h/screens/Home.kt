@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
@@ -71,11 +72,21 @@ fun Home(navController: NavController, productViewModel: ProductViewModel) {
                 },
                 actions = {
                     IconButton(onClick = {
+                        navController.navigate("Favorite")
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = "Localized description",
+                                    tint = Color.Red
+                        )
+                    }
+                    IconButton(onClick = {
                         navController.navigate("ShoppingCart")
                     }) {
                         Icon(
                             imageVector = Icons.Filled.ShoppingCart,
-                            contentDescription = "Localized description"
+                            contentDescription = "Localized description",
+
                         )
                     }
                     IconButton(onClick = { /* do something */ }) {
@@ -105,7 +116,7 @@ fun ScrollContent(innerPadding: PaddingValues, products: List<Product>, onClick:
     ) {
         items(products) { product ->
             ProductCard( product, onClick)
-        }
+       }
     }
 }
 

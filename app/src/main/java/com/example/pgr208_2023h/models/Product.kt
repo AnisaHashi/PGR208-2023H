@@ -7,5 +7,9 @@ data class Product(
     val image: String,
     val description: String,
     val category: String,
+    val rating: Rating
+
 )
+
+data class Rating (val rate: Double, val count: Int)
 

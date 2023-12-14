@@ -11,11 +11,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.pgr208_2023h.screens.Details
+import com.example.pgr208_2023h.screens.Favorite
 import com.example.pgr208_2023h.screens.Home
 import com.example.pgr208_2023h.screens.OrderHistory
 import com.example.pgr208_2023h.screens.ShoppingCart
 import com.example.pgr208_2023h.ui.theme.PGR2082023HTheme
 import com.example.pgr208_2023h.viewmodels.CartViewModel
+import com.example.pgr208_2023h.viewmodels.FavoriteViewModel
 import com.example.pgr208_2023h.viewmodels.OrderHistoryviewModel
 import com.example.pgr208_2023h.viewmodels.ProductViewModel
 
@@ -25,6 +27,7 @@ class MainActivity : ComponentActivity() {
         val productViewModel = ProductViewModel()
         val cartViewModel = CartViewModel()
         val orderHistoryviewModel = OrderHistoryviewModel()
+        val favoriteViewModel = FavoriteViewModel()
 
 
         super.onCreate(savedInstanceState)
@@ -48,11 +51,14 @@ class MainActivity : ComponentActivity() {
                         composable("Details/{productId}",
                             arguments = listOf(navArgument("productId") { type = NavType.IntType })){backStackEntry ->
                             val productId = backStackEntry.arguments?.getInt("productId") ?: -1
-                            Details(navController = navController, productId = productId, productViewModel = productViewModel, cartViewModel = cartViewModel)
+                            Details(navController = navController, productId = productId, productViewModel = productViewModel, cartViewModel = cartViewModel, favoriteViewModel = favoriteViewModel )
 
                         }
                         composable("OrderHistory"){
                             OrderHistory(navController = navController, orderHistoryviewModel)
+                        }
+                        composable("Favorite"){
+                            Favorite(navController = navController, favoriteViewModel)
                         }
                     }
 

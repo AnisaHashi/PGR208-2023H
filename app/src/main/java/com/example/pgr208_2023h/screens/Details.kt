@@ -1,12 +1,30 @@
 package com.example.pgr208_2023h.screens
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,15 +35,26 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
+import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.viewmodels.CartViewModel
+import com.example.pgr208_2023h.viewmodels.FavoriteViewModel
 import com.example.pgr208_2023h.viewmodels.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Details(navController: NavController, productId: Int, productViewModel: ProductViewModel, cartViewModel: CartViewModel){
+fun Details(navController: NavController, productId: Int, productViewModel: ProductViewModel, cartViewModel: CartViewModel, favoriteViewModel: FavoriteViewModel) {
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -58,14 +87,25 @@ fun Details(navController: NavController, productId: Int, productViewModel: Prod
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("Home")
+                        navController.navigate("Favorite")
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = "Localized description",
+                            tint = Color.Red
+                        )
+                    }
+                    IconButton(onClick = {
+                        navController.navigate("ShoppingCart")
                     }) {
                         Icon(
                             imageVector = Icons.Filled.ShoppingCart,
                             contentDescription = "Localized description"
                         )
                     }
-                    IconButton(onClick = { navController.navigate("") }) {
+                    IconButton(onClick = {
+                        navController.navigate("") // Replace with your intended action
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Menu,
                             contentDescription = "Localized description"
@@ -76,26 +116,190 @@ fun Details(navController: NavController, productId: Int, productViewModel: Prod
             )
         },
     ) { innerPadding ->
-        Column (modifier = Modifier.padding(innerPadding)) {
+        /*Old(innerPadding=innerPadding, product = product, onAddCart = {
+            cartViewModel.addCartItem(it)
+            navController.navigate("ShoppingCart")
+        }, onAddFav = {
+            favoriteViewModel.addFavoriteItem(it)
+            navController.navigate("Favorite")
+        })*/
 
-                Text(text = "${product?.title}")
+        if(product != null ){
 
-                Button(onClick = {
-                    if(product != null){
-                        cartViewModel.addCartItem(product)
+            val isFavorite = favoriteViewModel.FavoriteItems.any { it.id == productId }
+            New(innerPadding=innerPadding, product= product, isFavorite= isFavorite, onAddCart = {
+                cartViewModel.addCartItem(product = product)
+                navController.navigate("ShoppingCart")
 
+            }, onAddFav = {
+                favoriteViewModel.addFavoriteItem(it)
+
+            })
+        }
+    }
+
+}
+
+
+@Composable
+fun New(innerPadding: PaddingValues, product: Product, isFavorite: Boolean,  onAddCart: (product:Product)-> Unit, onAddFav: (product:Product)-> Unit){
+    val scrollState = rememberScrollState()
+
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .verticalScroll(state = scrollState)
+    ){
+        Card(
+            colors = CardDefaults.cardColors(
+     containerColor = Color.White
+            ),
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(350.dp)
+                .padding(16.dp)
+
+
+
+
+        ) {
+            Image(
+                painter = rememberImagePainter(
+                    data = product.image, // Replace with your image URL
+                    builder = {
+                        crossfade(true)
                     }
+                ),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(350.dp)
+            )
+        }
+        Text(text = product.title,
+            modifier = Modifier
+                .padding(16.dp),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Normal
+        )
+        Row(modifier =
+        Modifier
+            .padding(16.dp)
+            .fillMaxWidth(0.6f)
+            .align(alignment = Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.SpaceBetween
 
-                    navController.navigate("ShoppingCart")
+        ) {
+            Text(text = product.category)
+            Row {
+                Text(text = "${product.rating.rate}")
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    tint = Color(android.graphics.Color.parseColor("#ccbb39")),
 
-                }) {
-                    Text(text = "Add to cart")
+                    contentDescription = "Localized description"
+                )
+                Text(text = "${product.rating.count}")
+            }
+        }
+
+        Text(text = product.description,
+            modifier = Modifier
+                .padding(16.dp),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Normal
+        )
+
+        Row (modifier = Modifier
+            .fillMaxWidth(0.6f)
+            .padding(16.dp)
+            .align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.SpaceBetween
+
+        ){
+            IconButton(onClick = { onAddFav(product) }) {
+                if(isFavorite){
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        modifier = Modifier.size(50.dp),
+                        contentDescription = "Localized description",
+                        tint = Color.Red
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Filled.FavoriteBorder ,
+                        modifier = Modifier.size(50.dp),
+                        contentDescription = "Localized description",
+                    )
                 }
 
+
+
+            }
+            IconButton(onClick = { onAddCart(product) }) {
+                Icon(
+                    imageVector = Icons.Filled.ShoppingCart,
+                    modifier = Modifier.size(50.dp),
+                    contentDescription = "Localized description",
+
+                    )
+            }
         }
-        // ScrollContent(innerPadding, onClick = { navController.navigate("Details")})
     }
+
 
 
 }
 
+@Composable
+fun Old (innerPadding:PaddingValues, product:Product?, onAddCart: (product:Product)-> Unit, onAddFav: (product:Product)-> Unit){
+    val scrollState = rememberScrollState()
+
+    Column(modifier = Modifier.padding(innerPadding)) {
+
+        Text(text = "${product?.title}")
+
+        Button(onClick = {
+            if (product != null) {
+                onAddCart(product)
+
+            }
+
+        }) {
+            
+            Text(text = "Add to cart")
+        }
+
+        Button(onClick = {
+            if (product != null) {
+                onAddFav(product)
+            }
+        }) {
+            Text(text = "Add to favorite list")
+        }
+
+    }
+
+}
+
+
+@Composable
+fun FilledCardExample() {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
+        modifier = Modifier
+            .size(width = 240.dp, height = 100.dp)
+            .background(Color.Red)
+    ) {
+        Text(
+            text = "Filled",
+            modifier = Modifier
+                .padding(16.dp),
+            textAlign = TextAlign.Center,
+        )
+    }
+}

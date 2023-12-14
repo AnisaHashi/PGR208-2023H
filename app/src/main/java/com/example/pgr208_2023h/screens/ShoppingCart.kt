@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
@@ -26,6 +27,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -103,14 +105,25 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
                 },
                 actions = {
                     IconButton(onClick = {
+                        navController.navigate("Favorite")
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = "Localized description",
+                            tint = Color.Red
+                        )
+                    }
+                    IconButton(onClick = {
                         navController.navigate("ShoppingCart")
                     }) {
+
                         Icon(
                             imageVector = Icons.Filled.ShoppingCart,
                             contentDescription = "Shopping Cart"
                         )
                     }
                     IconButton(onClick = { /* do something */ }) {
+
                         Icon(
                             imageVector = Icons.Filled.Menu,
                             contentDescription = "Localized description"
@@ -157,7 +170,7 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
 
 
             ) {
-                Text("Place order")
+                Text("Place order (${cartViewModel.cartItems.sumOf { it.price }})")
             }
 
             //} else {

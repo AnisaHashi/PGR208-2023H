@@ -25,6 +25,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.pgr208_2023h.models.OrderHistory
+import com.example.pgr208_2023h.data.OrderHistory
 import com.example.pgr208_2023h.viewmodels.OrderHistoryviewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -99,6 +100,7 @@ fun OrderHistoryCard(orderHistory: OrderHistory) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderHistory(navController: NavController, orderHistoryviewModel: OrderHistoryviewModel) {
+    val orders = orderHistoryviewModel.orders.collectAsState(initial = emptyList()).value
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
 
@@ -169,7 +171,7 @@ fun OrderHistory(navController: NavController, orderHistoryviewModel: OrderHisto
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(orderHistoryviewModel.orderHistoryItems) { orderHistory ->
+                items(orders) { orderHistory ->
                     OrderHistoryCard(orderHistory = orderHistory)
                 }
             }

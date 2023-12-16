@@ -25,13 +25,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.pgr208_2023h.models.OrderHistory
+import com.example.pgr208_2023h.data.OrderHistory
 import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.services.ShoppingCartService
 import com.example.pgr208_2023h.viewmodels.CartViewModel
@@ -77,6 +78,8 @@ fun ShoppingCartItem(product: Product, onDelete:() -> Unit){
 @Composable
 fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, orderHistoryviewModel: OrderHistoryviewModel) {
 
+    val orders = orderHistoryviewModel.orders.collectAsState(initial = emptyList()).value
+
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val shoppingCartService = ShoppingCartService()
 
@@ -108,7 +111,7 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
                         navController.navigate("Favorite")
                     }) {
                         Icon(
-                            imageVector = Icons.Filled.Favorite,
+                            imageVector = Icons.Filled.Favorite, //CardGiftcard
                             contentDescription = "Localized description",
                             tint = Color.Red
                         )
@@ -157,8 +160,11 @@ fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, ord
                     val antall = cartViewModel.cartItems.size
                     val items = cartViewModel.cartItems.map { it.title }
 
-                    val orderHistory= OrderHistory(date = date, items = items, sumPrice = sum, sumItems =  antall)
-                    orderHistoryviewModel.addOrderHistoryItem(orderHistory)
+
+
+                 //   val orderHistory= OrderHistory(date = date, items = items, sumPrice = sum, sumItems =  antall)
+                    val orderHistory = OrderHistory(date = date, items = items, sumPrice = sum, sumItems =  antall)
+                    orderHistoryviewModel.addOrder(orderHistory)
 
                     cartViewModel.clear()
 

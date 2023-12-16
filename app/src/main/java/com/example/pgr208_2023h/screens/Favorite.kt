@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,7 +12,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -208,16 +205,15 @@ fun FavoriteScrolling(innerPadding: PaddingValues, favorites: List<Product>, onI
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoriteCard() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp)
-            .padding(16.dp)
-    ) {
-        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+
+        Column(modifier = Modifier
+            .padding(horizontal = 16.dp),
+
+
+        ) {
             Text(
                 "Ingenting er her!"
             )
         }
-    }
+
 }

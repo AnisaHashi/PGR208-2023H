@@ -10,6 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.room.Room
+import com.example.pgr208_2023h.data.OrderesDatabase
 import com.example.pgr208_2023h.screens.Details
 import com.example.pgr208_2023h.screens.Favorite
 import com.example.pgr208_2023h.screens.Home
@@ -23,10 +25,19 @@ import com.example.pgr208_2023h.viewmodels.ProductViewModel
 
 
 class MainActivity : ComponentActivity() {
+
+    private val database by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            OrderesDatabase::class.java,
+            "app.db"
+        ).build()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val productViewModel = ProductViewModel()
         val cartViewModel = CartViewModel()
-        val orderHistoryviewModel = OrderHistoryviewModel()
+        val orderHistoryviewModel = OrderHistoryviewModel(database.dao)
         val favoriteViewModel = FavoriteViewModel()
 
 

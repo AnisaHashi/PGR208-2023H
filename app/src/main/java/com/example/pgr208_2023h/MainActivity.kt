@@ -16,6 +16,7 @@ import com.example.pgr208_2023h.screens.Details
 import com.example.pgr208_2023h.screens.Favorite
 import com.example.pgr208_2023h.screens.Home
 import com.example.pgr208_2023h.screens.OrderHistory
+import com.example.pgr208_2023h.screens.SearchScreen
 import com.example.pgr208_2023h.screens.ShoppingCart
 import com.example.pgr208_2023h.ui.theme.PGR2082023HTheme
 import com.example.pgr208_2023h.viewmodels.CartViewModel
@@ -70,6 +71,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("Favorite"){
                             Favorite(navController = navController, favoriteViewModel)
+                        }
+
+                        composable("Search"){
+                            SearchScreen(navController = navController, productViewModel = productViewModel)
                         }
                     }
 

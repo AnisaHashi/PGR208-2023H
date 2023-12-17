@@ -26,65 +26,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pgr208_2023h.components.AppNavigationDrawer
 import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.viewmodels.FavoriteViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Favorite(navController: NavController, favoriteViewModel: FavoriteViewModel) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        "Favorite Products",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigate("Home") }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {
-                        navController.navigate("ShoppingCart")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Favorite,
-                            contentDescription = "Localized description",
-                            tint = Color.Red
-                        )
-                    }
-                    IconButton(onClick = {
-                        navController.navigate("ShoppingCart")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.ShoppingCart,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                    IconButton(onClick = {
-                        navController.navigate("") // Replace with your intended action
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-            )
-        },
-    ){ innerPadding ->
-        FavoriteScrolling(innerPadding, favorites = favoriteViewModel.FavoriteItems,  onItemClick = { navController.navigate("Details/${it}")})
 
+    AppNavigationDrawer(navController = navController, title = "Favorites") {innerPadding->
+        FavoriteScrolling(innerPadding, favorites = favoriteViewModel.FavoriteItems,  onItemClick = { navController.navigate("Details/${it}")})
 
     }
 }
@@ -115,11 +65,9 @@ fun FavoriteCard() {
 
         Column(modifier = Modifier
             .padding(horizontal = 16.dp),
-
-
         ) {
             Text(
-                "Ingenting er her!"
+                "Your favorite list is empty!"
             )
         }
 

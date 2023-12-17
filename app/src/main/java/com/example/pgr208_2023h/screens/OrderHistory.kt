@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pgr208_2023h.components.AppNavigationDrawer
 import com.example.pgr208_2023h.data.OrderHistory
 import com.example.pgr208_2023h.viewmodels.OrderHistoryviewModel
 import java.time.LocalDateTime
@@ -101,78 +102,29 @@ fun OrderHistoryCard(orderHistory: OrderHistory) {
 @Composable
 fun OrderHistory(navController: NavController, orderHistoryviewModel: OrderHistoryviewModel) {
     val orders = orderHistoryviewModel.orders.collectAsState(initial = emptyList()).value
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                navigationIcon = {
-                    IconButton(onClick = {
-                        val currentDestination = navController.currentDestination?.route
-
-                        if (currentDestination != "Home") {
-                            navController.navigate("Home")
-                        } else {
-                            navController.popBackStack()
-                        }
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        "Order history:",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                actions = {
-                    IconButton(onClick = {
-                        navController.navigate("Favorite")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Favorite,
-                            contentDescription = "Localized description",
-                            tint = Color.Red
-                        )
-                    }
-                    IconButton(onClick = {
-                        navController.navigate("ShoppingCart")
-                    }) {
-
-                        Icon(
-                            imageVector = Icons.Filled.ShoppingCart,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                    IconButton(onClick = {
-                        navController.navigate("") // Replace with your intended action
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior
-            )
-        },
-    ) { innerPadding ->
+    AppNavigationDrawer(navController = navController, title = "Order History") {innerPadding->
         Column {
             LazyColumn(
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                if(orders.isNotEmpty()){
+
                 items(orders) { orderHistory ->
                     OrderHistoryCard(orderHistory = orderHistory)
+                }
+                } else {
+                    item {
+                        Column(modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                        ) {
+                            Text(
+                                "You have no previous order history!!"
+                            )
+                        }
+
+                    }
                 }
             }
         }

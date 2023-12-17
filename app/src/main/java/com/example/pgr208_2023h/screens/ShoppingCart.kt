@@ -1,11 +1,14 @@
 package com.example.pgr208_2023h.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -32,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pgr208_2023h.components.AppNavigationDrawer
 import com.example.pgr208_2023h.data.OrderHistory
 import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.services.ShoppingCartService
@@ -41,9 +45,9 @@ import java.time.LocalDateTime
 
 
 @Composable
-fun ShoppingCartItem(product: Product, onDelete:() -> Unit){
+fun ShoppingCartItem(product: Product, onDelete: () -> Unit) {
 
-    Row (
+    Row(
         verticalAlignment = Alignment.CenterVertically,
 
         modifier = Modifier
@@ -56,8 +60,9 @@ fun ShoppingCartItem(product: Product, onDelete:() -> Unit){
 
 
         // Card
-        Row(modifier = Modifier
-            .fillMaxWidth(0.9f),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.9f),
         ) {
             ProductCard(product = product, onClick = {})
         }
@@ -76,118 +81,79 @@ fun ShoppingCartItem(product: Product, onDelete:() -> Unit){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShoppingCart(navController: NavController, cartViewModel: CartViewModel, orderHistoryviewModel: OrderHistoryviewModel) {
+fun ShoppingCart(
+    navController: NavController,
+    cartViewModel: CartViewModel,
+    orderHistoryviewModel: OrderHistoryviewModel
+) {
 
-    val orders = orderHistoryviewModel.orders.collectAsState(initial = emptyList()).value
+    AppNavigationDrawer(navController = navController, title = "Cart") { innerPadding ->
 
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val shoppingCartService = ShoppingCartService()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigate("Home") }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        "Cart",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                actions = {
-                    IconButton(onClick = {
-                        navController.navigate("Favorite")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Favorite, //CardGiftcard
-                            contentDescription = "Localized description",
-                            tint = Color.Red
-                        )
-                    }
-                    IconButton(onClick = {
-                        navController.navigate("ShoppingCart")
-                    }) {
-
-                        Icon(
-                            imageVector = Icons.Filled.ShoppingCart,
-                            contentDescription = "Shopping Cart"
-                        )
-                    }
-                    IconButton(onClick = { /* do something */ }) {
-
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior
-            )
-        },
-    ) { innerPadding ->
-        Column(modifier = Modifier.fillMaxHeight()){
+        Column(modifier = Modifier.fillMaxHeight()) {
             LazyColumn(
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(cartViewModel.cartItems) { product ->
-                    ShoppingCartItem(product = product, onDelete = {cartViewModel.deleteCartItem(product)})
+                if (cartViewModel.cartItems.isNotEmpty()) {
+
+                    items(cartViewModel.cartItems) { product ->
+                        ShoppingCartItem(
+                            product = product,
+                            onDelete = { cartViewModel.deleteCartItem(product) })
+                    }
+                } else {
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+                        ) {
+                            Text(
+                                "Your shopping cart is empty!"
+                            )
+                        }
+
+                    }
                 }
 
             }
-            
-            
-
-           //if(cartViewModel.cartItems.size > 0){
-
-
-            Button(
-                onClick = {
-                    val date = LocalDateTime.now()
-                    val sum = cartViewModel.cartItems.sumOf { it.price }
-                    val antall = cartViewModel.cartItems.size
-                    val items = cartViewModel.cartItems.map { it.title }
 
 
 
-                 //   val orderHistory= OrderHistory(date = date, items = items, sumPrice = sum, sumItems =  antall)
-                    val orderHistory = OrderHistory(date = date, items = items, sumPrice = sum, sumItems =  antall)
-                    orderHistoryviewModel.addOrder(orderHistory)
+            if (cartViewModel.cartItems.isNotEmpty()) {
 
-                    cartViewModel.clear()
-
-                    navController.navigate("OrderHistory")
-
-                          },
-                modifier = Modifier
-                    .fillMaxWidth()
+                Button(
+                    onClick = {
+                        val date = LocalDateTime.now()
+                        val sum = cartViewModel.cartItems.sumOf { it.price }
+                        val antall = cartViewModel.cartItems.size
+                        val items = cartViewModel.cartItems.map { it.title }
 
 
-            ) {
-                Text("Place order (${cartViewModel.cartItems.sumOf { it.price }})")
+                        //   val orderHistory= OrderHistory(date = date, items = items, sumPrice = sum, sumItems =  antall)
+                        val orderHistory =
+                            OrderHistory(
+                                date = date,
+                                items = items,
+                                sumPrice = sum,
+                                sumItems = antall
+                            )
+                        orderHistoryviewModel.addOrder(orderHistory)
+
+                        cartViewModel.clear()
+
+                        navController.navigate("OrderHistory")
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+
+                ) {
+                    Text("Place order (${cartViewModel.cartItems.sumOf { it.price }})")
+                }
             }
 
-            //} else {
-              // Text(text = "Handlekurven er tom. ")
-            //}
-
-
-
-
         }
-       // ScrollContent(innerPadding, onClick = { navController.navigate("Details")})
     }
 
 

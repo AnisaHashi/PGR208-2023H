@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.pgr208_2023h.components.AppNavigationDrawer
 import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.viewmodels.CartViewModel
 import com.example.pgr208_2023h.viewmodels.FavoriteViewModel
@@ -50,78 +51,14 @@ import com.example.pgr208_2023h.viewmodels.ProductViewModel
 @Composable
 fun Details(navController: NavController, productId: Int, productViewModel: ProductViewModel, cartViewModel: CartViewModel, favoriteViewModel: FavoriteViewModel) {
 
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
     val product = productViewModel.products.find { p -> p.id == productId }
 
 
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        "Product Details: for ${productId}",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                actions = {
-                    IconButton(onClick = {
-                        navController.navigate("Favorite")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Favorite,
-                            contentDescription = "Localized description",
-                            tint = Color.Red
-                        )
-                    }
-                    IconButton(onClick = {
-                        navController.navigate("ShoppingCart")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.ShoppingCart,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                    IconButton(onClick = {
-                        navController.navigate("") // Replace with your intended action
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior
-            )
-        },
-    ) { innerPadding ->
-        /*Old(innerPadding=innerPadding, product = product, onAddCart = {
-            cartViewModel.addCartItem(it)
-            navController.navigate("ShoppingCart")
-        }, onAddFav = {
-            favoriteViewModel.addFavoriteItem(it)
-            navController.navigate("Favorite")
-        })*/
-
+    AppNavigationDrawer(navController = navController, title = "Product details"){
         if(product != null ){
 
             val isFavorite = favoriteViewModel.FavoriteItems.any { it.id == productId }
-            New(innerPadding=innerPadding, product= product, isFavorite= isFavorite, onAddCart = {
+            New(innerPadding=it, product= product, isFavorite= isFavorite, onAddCart = {
                 cartViewModel.addCartItem(product = product)
                 navController.navigate("ShoppingCart")
 
@@ -131,7 +68,6 @@ fun Details(navController: NavController, productId: Int, productViewModel: Prod
             })
         }
     }
-
 }
 
 

@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import com.example.pgr208_2023h.models.Product
 import com.example.pgr208_2023h.viewmodels.ProductViewModel
 import androidx.compose.runtime.mutableStateListOf
+import com.example.pgr208_2023h.components.AppNavigationDrawer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,14 +34,11 @@ fun SearchScreen(navController: NavController, productViewModel: ProductViewMode
     var query by remember { mutableStateOf("") }
     var result by remember { mutableStateOf<List<Product>>(emptyList()) }
 
-
-    // Adding a sample product to the list
-
-
+    AppNavigationDrawer(navController = navController, title = "Search") {innerPadding->
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(innerPadding)
     ) {
         // Search input field
         TextField(
@@ -52,6 +50,7 @@ fun SearchScreen(navController: NavController, productViewModel: ProductViewMode
             ),
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 8.dp)
                 .padding(bottom = 16.dp)
         )
 
@@ -81,4 +80,7 @@ fun SearchScreen(navController: NavController, productViewModel: ProductViewMode
             }
         }
     }
+
+    }
+
 }

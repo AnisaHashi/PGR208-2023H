@@ -89,7 +89,7 @@ fun Home(navController: NavController, productViewModel: ProductViewModel) {
 
                         )
                     }
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { navController.navigate("OrderHistory")}) {
                         Icon(
                             imageVector = Icons.Filled.Menu,
                             contentDescription = "Localized description"

@@ -7,7 +7,7 @@ import retrofit2.http.GET
 
 const val BASE_URL = "https://fakestoreapi.com"
 
-interface   Productservice {
+interface Productservice {
     @GET("/products?limit=10")
     suspend fun getProucts(): List<Product>
 

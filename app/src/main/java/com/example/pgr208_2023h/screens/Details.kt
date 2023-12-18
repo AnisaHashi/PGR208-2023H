@@ -13,30 +13,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -49,49 +40,55 @@ import com.example.pgr208_2023h.viewmodels.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Details(navController: NavController, productId: Int, productViewModel: ProductViewModel, cartViewModel: CartViewModel, favoriteViewModel: FavoriteViewModel) {
+fun Details(
+    navController: NavController,
+    productId: Int,
+    productViewModel: ProductViewModel,
+    cartViewModel: CartViewModel,
+    favoriteViewModel: FavoriteViewModel
+) {
 
     val product = productViewModel.products.find { p -> p.id == productId }
 
-
-    AppNavigationDrawer(navController = navController, title = "Product details"){
-        if(product != null ){
-
+    AppNavigationDrawer(navController = navController, title = "Product details") {
+        if (product != null) {
             val isFavorite = favoriteViewModel.FavoriteItems.any { it.id == productId }
-            New(innerPadding=it, product= product, isFavorite= isFavorite, onAddCart = {
+            New(innerPadding = it, product = product, isFavorite = isFavorite, onAddCart = {
                 cartViewModel.addCartItem(product = product)
                 navController.navigate("ShoppingCart")
 
             }, onAddFav = {
                 favoriteViewModel.addFavoriteItem(it)
-
             })
         }
     }
 }
 
-
 @Composable
-fun New(innerPadding: PaddingValues, product: Product, isFavorite: Boolean,  onAddCart: (product:Product)-> Unit, onAddFav: (product:Product)-> Unit){
+fun New(
+    innerPadding: PaddingValues,
+    product: Product,
+    isFavorite: Boolean,
+    onAddCart: (product: Product) -> Unit,
+    onAddFav: (product: Product) -> Unit
+) {
     val scrollState = rememberScrollState()
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
             .verticalScroll(state = scrollState)
-    ){
+    ) {
         Card(
             colors = CardDefaults.cardColors(
-     containerColor = Color.White
+                containerColor = Color.White
             ),
 
             modifier = Modifier
                 .fillMaxWidth()
                 .height(350.dp)
                 .padding(16.dp)
-
-
 
 
         ) {
@@ -108,17 +105,19 @@ fun New(innerPadding: PaddingValues, product: Product, isFavorite: Boolean,  onA
                     .height(350.dp)
             )
         }
-        Text(text = product.title,
+        Text(
+            text = product.title,
             modifier = Modifier
                 .padding(16.dp),
             fontSize = 24.sp,
             fontWeight = FontWeight.Normal
         )
-        Row(modifier =
-        Modifier
-            .padding(16.dp)
-            .fillMaxWidth(0.6f)
-            .align(alignment = Alignment.CenterHorizontally),
+        Row(
+            modifier =
+            Modifier
+                .padding(16.dp)
+                .fillMaxWidth(0.6f)
+                .align(alignment = Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.SpaceBetween
 
         ) {
@@ -135,22 +134,24 @@ fun New(innerPadding: PaddingValues, product: Product, isFavorite: Boolean,  onA
             }
         }
 
-        Text(text = product.description,
+        Text(
+            text = product.description,
             modifier = Modifier
                 .padding(16.dp),
             fontSize = 18.sp,
             fontWeight = FontWeight.Normal
         )
 
-        Row (modifier = Modifier
-            .fillMaxWidth(0.6f)
-            .padding(16.dp)
-            .align(Alignment.CenterHorizontally),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.SpaceBetween
 
-        ){
+        ) {
             IconButton(onClick = { onAddFav(product) }) {
-                if(isFavorite){
+                if (isFavorite) {
                     Icon(
                         imageVector = Icons.Filled.Favorite,
                         modifier = Modifier.size(50.dp),
@@ -159,57 +160,20 @@ fun New(innerPadding: PaddingValues, product: Product, isFavorite: Boolean,  onA
                     )
                 } else {
                     Icon(
-                        imageVector = Icons.Filled.FavoriteBorder ,
+                        imageVector = Icons.Filled.FavoriteBorder,
                         modifier = Modifier.size(50.dp),
                         contentDescription = "Localized description",
                     )
                 }
-
-
-
             }
             IconButton(onClick = { onAddCart(product) }) {
                 Icon(
                     imageVector = Icons.Filled.ShoppingCart,
                     modifier = Modifier.size(50.dp),
                     contentDescription = "Localized description",
-
-                    )
+                )
             }
         }
     }
-
-
-
 }
 
-@Composable
-fun Old (innerPadding:PaddingValues, product:Product?, onAddCart: (product:Product)-> Unit, onAddFav: (product:Product)-> Unit){
-    val scrollState = rememberScrollState()
-
-    Column(modifier = Modifier.padding(innerPadding)) {
-
-        Text(text = "${product?.title}")
-
-        Button(onClick = {
-            if (product != null) {
-                onAddCart(product)
-
-            }
-
-        }) {
-            
-            Text(text = "Add to cart")
-        }
-
-        Button(onClick = {
-            if (product != null) {
-                onAddFav(product)
-            }
-        }) {
-            Text(text = "Add to favorite list")
-        }
-
-    }
-
-}

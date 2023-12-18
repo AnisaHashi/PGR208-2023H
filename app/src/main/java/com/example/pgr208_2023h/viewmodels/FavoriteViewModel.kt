@@ -9,7 +9,7 @@ class FavoriteViewModel : ViewModel() {
     val FavoriteItems: List<Product>
         get() = _cartList
 
-    fun addFavoriteItem(favorite: Product){
+    fun addFavoriteItem(favorite: Product) {
         _cartList.add(favorite)
     }
 }

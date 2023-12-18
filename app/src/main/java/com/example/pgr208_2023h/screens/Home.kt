@@ -1,7 +1,6 @@
 package com.example.pgr208_2023h.screens
 
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,6 @@ import coil.compose.rememberImagePainter
 import com.example.pgr208_2023h.components.AppNavigationDrawer
 
 import com.example.pgr208_2023h.models.Product
-import com.example.pgr208_2023h.services.ShoppingCartService
 import com.example.pgr208_2023h.viewmodels.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,17 +39,24 @@ fun Home(navController: NavController, productViewModel: ProductViewModel) {
         productViewModel.getProducts()
     })
 
-    AppNavigationDrawer(navController = navController, title = "Products", backNavigationEnabled = false ) {
+    AppNavigationDrawer(
+        navController = navController,
+        title = "Products",
+        backNavigationEnabled = false
+    ) {
         ScrollContent(
             innerPadding = it,
             products = productViewModel.products,
             onClick = { navController.navigate("Details/${it}") })
-
     }
 }
 
 @Composable
-fun ScrollContent(innerPadding: PaddingValues, products: List<Product>, onClick: (productId: Int)-> Unit, ) {
+fun ScrollContent(
+    innerPadding: PaddingValues,
+    products: List<Product>,
+    onClick: (productId: Int) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -59,17 +64,16 @@ fun ScrollContent(innerPadding: PaddingValues, products: List<Product>, onClick:
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(products) { product ->
-            ProductCard( product, onClick)
-       }
+            ProductCard(product, onClick)
+        }
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductCard(product: Product, onClick: (productId: Int)-> Unit) {
+fun ProductCard(product: Product, onClick: (productId: Int) -> Unit) {
 
-    val shoppingCartService = ShoppingCartService()
     Card(
 
         modifier = Modifier
@@ -77,13 +81,7 @@ fun ProductCard(product: Product, onClick: (productId: Int)-> Unit) {
             .height(180.dp)
             .padding(16.dp),
 
-        onClick = {
-            //shoppingCartService.addToCart(product = product)
-
-            onClick(product.id)
-        }
-
-
+        onClick = { onClick(product.id) }
     ) {
         Row(
             modifier = Modifier

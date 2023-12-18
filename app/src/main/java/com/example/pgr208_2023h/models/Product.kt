@@ -8,8 +8,7 @@ data class Product(
     val description: String,
     val category: String,
     val rating: Rating
-
 )
 
-data class Rating (val rate: Double, val count: Int)
+data class Rating(val rate: Double, val count: Int)
 

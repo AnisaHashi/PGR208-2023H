@@ -52,7 +52,6 @@ fun AppNavigationDrawer(
             DrawerContent(navController = navController)
         }
     ) {
-        // Scaffold content
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -60,8 +59,6 @@ fun AppNavigationDrawer(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         titleContentColor = MaterialTheme.colorScheme.primary,
                     ),
-
-
                     navigationIcon = {
                         if (backNavigationEnabled == true) {
                             IconButton(onClick = { navController.popBackStack() }) {
@@ -71,9 +68,7 @@ fun AppNavigationDrawer(
                                 )
                             }
                         }
-
                     },
-
                     title = {
                         Text(
                             title,
@@ -81,8 +76,6 @@ fun AppNavigationDrawer(
                             overflow = TextOverflow.Ellipsis
                         )
                     },
-
-
                     actions = {
                         IconButton(onClick = {
                             navController.navigate("Favorite")
@@ -140,7 +133,7 @@ fun DrawerContent(navController: NavController) {
                     contentDescription = "Localized description"
                 )
             },
-            onClick = {navController.navigate("OrderHistory") }
+            onClick = { navController.navigate("OrderHistory") }
         )
         NavigationDrawerItem(
             label = { Text(text = "Filter") },

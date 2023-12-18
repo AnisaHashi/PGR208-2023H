@@ -14,29 +14,25 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-
 @Entity
 data class OrderHistory(
-
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-
     val date: LocalDateTime,
     val items: List<String>,
     val sumPrice: Double,
     val sumItems: Int,
-
 )
 
 @Dao
 interface OrderHistoryDao {
-
     @Insert
     suspend fun addOrder(orderHistory: OrderHistory)
 
     @Query("SELECT * FROM orderHistory")
-    fun getAllOrderes (): Flow<List<OrderHistory>>
+    fun getAllOrderes(): Flow<List<OrderHistory>>
 }
+
 class LocalDateTimeConverter {
     @TypeConverter
     fun toLocalDateTime(timestamp: Long?): LocalDateTime? {
@@ -50,8 +46,6 @@ class LocalDateTimeConverter {
         return localDateTime?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli()
     }
 }
-
-
 
 class StringListConverter {
     @TypeConverter
@@ -67,12 +61,11 @@ class StringListConverter {
     }
 }
 
-
 @Database(
     entities = [OrderHistory::class],
     version = 1
 )
 @TypeConverters(value = [LocalDateTimeConverter::class, StringListConverter::class])
-abstract class OrderesDatabase: RoomDatabase(){
+abstract class OrderesDatabase : RoomDatabase() {
     abstract val dao: OrderHistoryDao
 }

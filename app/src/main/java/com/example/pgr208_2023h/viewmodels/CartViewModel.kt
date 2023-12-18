@@ -9,10 +9,11 @@ class CartViewModel : ViewModel() {
     val cartItems: List<Product>
         get() = _cartList
 
-    fun addCartItem(product: Product){
+    fun addCartItem(product: Product) {
         _cartList.add(product)
     }
-    fun deleteCartItem(product: Product){
+
+    fun deleteCartItem(product: Product) {
         _cartList.remove(product)
     }
 

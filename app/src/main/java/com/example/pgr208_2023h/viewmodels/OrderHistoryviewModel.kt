@@ -8,11 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class OrderHistoryviewModel(private val orderHistoryDao: OrderHistoryDao): ViewModel() {
+class OrderHistoryviewModel(private val orderHistoryDao: OrderHistoryDao) : ViewModel() {
 
     val orders: Flow<List<OrderHistory>> = orderHistoryDao.getAllOrderes()
-
-
 
     fun addOrder(order: OrderHistory) {
         viewModelScope.launch(Dispatchers.IO) {

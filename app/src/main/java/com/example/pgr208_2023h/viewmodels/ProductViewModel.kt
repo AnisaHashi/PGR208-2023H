@@ -12,7 +12,6 @@ class ProductViewModel : ViewModel() {
     val products: List<Product>
         get() = _productList
 
-
     fun getProducts() {
         viewModelScope.launch {
             val service = Productservice.getInstance()

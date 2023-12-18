@@ -57,8 +57,8 @@ fun SearchScreen(navController: NavController, productViewModel: ProductViewMode
                 onClick = {
 
                     val searchResult = productViewModel.products.filter {
-                        it.title.lowercase().contains(query) || it.description.lowercase()
-                            .contains(query)
+                        it.title.lowercase().contains(query.lowercase()) || it.description.lowercase()
+                            .contains(query.lowercase())
                     }
                     result = searchResult
                     searched = true

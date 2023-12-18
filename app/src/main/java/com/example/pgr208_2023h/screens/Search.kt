@@ -32,6 +32,7 @@ import com.example.pgr208_2023h.components.AppNavigationDrawer
 @Composable
 fun SearchScreen(navController: NavController, productViewModel: ProductViewModel) {
     var query by remember { mutableStateOf("") }
+    var searched by remember { mutableStateOf(false) }
     var result by remember { mutableStateOf<List<Product>>(emptyList()) }
 
     AppNavigationDrawer(navController = navController, title = "Search") {innerPadding->
@@ -63,6 +64,7 @@ fun SearchScreen(navController: NavController, productViewModel: ProductViewMode
                 println("abdi2: " + query)
                 println("abdi3: " + productViewModel.products.map { it.title })
                 result = searchResult
+                searched = true
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -75,9 +77,29 @@ fun SearchScreen(navController: NavController, productViewModel: ProductViewMode
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(result) { product ->
-                ProductCard( product, onClick={navController.navigate("Details/${product.id}") })
+            if(searched){
+                if(result.isNotEmpty()) {
+
+
+                    items(result) { product ->
+                        ProductCard(
+                            product,
+                            onClick = { navController.navigate("Details/${product.id}") })
+                    }
+                }
+                    else {
+                        item {
+                            Column {
+                                Text(text = "No match found!", modifier = Modifier.padding(16.dp))
+                            }
+                        }
+                    }
+
+
+
+
             }
+            
         }
     }
 

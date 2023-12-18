@@ -41,12 +41,10 @@ import java.time.format.DateTimeFormatter
 
 
 // Help functions
-
 fun getDate(date: LocalDateTime): String {
     val formatter = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss Y")
     return date.format(formatter)
 }
-
 
 @Composable
 fun OrderHistoryCard(orderHistory: OrderHistory) {
@@ -79,7 +77,6 @@ fun OrderHistoryCard(orderHistory: OrderHistory) {
                     Text(
                         text = "${index+1}. ${item}",
                         maxLines = 1
-
                     )
                 }
             }
@@ -88,14 +85,8 @@ fun OrderHistoryCard(orderHistory: OrderHistory) {
 
             Text(
                 text = "$ ${orderHistory.sumPrice}(${orderHistory.sumItems} items )",
-
-
-
             )
-
         }
-
-
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
